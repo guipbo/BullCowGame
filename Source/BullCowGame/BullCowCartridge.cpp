@@ -5,7 +5,7 @@ void UBullCowCartridge::BeginPlay() // When the game starts
 {
     Super::BeginPlay();
     
-    SetupGame();
+    SetupGame(3);
     PrintLine(TEXT("Welcome to the game."));
     PrintLine(TEXT("HiddenWord: %s"), *HiddenWord);
     PrintLine(TEXT("Guess the %i letters word!"), HiddenWord.Len());
@@ -35,8 +35,15 @@ void UBullCowCartridge::OnInput(const FString& Input) // When the player hits en
     PrintLine(TEXT("You have won!"));
 }
 
-void UBullCowCartridge::SetupGame(){
+void UBullCowCartridge::SetupGame(int32 difficulty){
 
-    HiddenWord = TEXT("cake"); //Set the HiddenWord
+    //Set HiddenWord
+    if(difficulty == 1)
+        HiddenWord = EasyWords[FMath::RandRange(0, 99)];
+    else if(difficulty == 2)
+        HiddenWord = NormalWords[FMath::RandRange(0, 99)];
+    else if(difficulty == 3)
+        HiddenWord = HardWords[FMath::RandRange(0, 99)];
+    
     Lives = 5; //Set number of lives
 }
