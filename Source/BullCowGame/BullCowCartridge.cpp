@@ -5,45 +5,76 @@ void UBullCowCartridge::BeginPlay() // When the game starts
 {
     Super::BeginPlay();
     
-    SetupGame(3);
-    PrintLine(TEXT("Welcome to the game."));
-    PrintLine(TEXT("HiddenWord: %s"), *HiddenWord);
-    PrintLine(TEXT("Guess the %i letters word!"), HiddenWord.Len());
-
+    Difficulty = 3;
+    SetupGame(Difficulty);
 }
 
 void UBullCowCartridge::OnInput(const FString& Input) // When the player hits enter
 {
-    ClearScreen();
 
-    if(HiddenWord!=Input){
-        Lives -= 1;
-
-        if(Lives <= 0)
+    if(!bGameOver)
+    {
+        if(HiddenWord!=Input)
         {
-            PrintLine(TEXT("You are out of lives.\nThe word was: %s"), *HiddenWord);
-            PrintLine(TEXT("Lets try again with another word?"));
+            Lives -= 1;
+
+            if(Lives <= 0)
+            {
+                PrintLine(TEXT("You are out of lives.\nThe word was: %s"), *HiddenWord);
+                EndGame();
+                return;
+            }
+
+            PrintLine(TEXT("That's not right, but you can do this!\nYou still have %i live(s)."), Lives);
+
+            if(HiddenWord.Len()!=Input.Len())
+                PrintLine(TEXT("Please try a %i letters word."), HiddenWord.Len());
             return;
         }
-
-        if(HiddenWord.Len()!=Input.Len())
-            PrintLine(TEXT("Please try a %i letters word."), HiddenWord.Len());
-
-        PrintLine(TEXT("You can do this!\nYou still have %i live(s)."), Lives);
-        return;
+        PrintLine(TEXT("Congratulations!\nThat's a win.\nYou're great on this!"));
+        EndGame();
     }
-    PrintLine(TEXT("You have won!"));
+    ClearScreen();
+    SetupGame(Difficulty);
 }
 
-void UBullCowCartridge::SetupGame(int32 difficulty){
+void UBullCowCartridge::SetupGame(int32 difficulty)
+{
+    PrintLine(TEXT("Welcome to the game."));
 
-    //Set HiddenWord
-    if(difficulty == 1)
-        HiddenWord = EasyWords[FMath::RandRange(0, 99)];
-    else if(difficulty == 2)
-        HiddenWord = NormalWords[FMath::RandRange(0, 99)];
-    else if(difficulty == 3)
-        HiddenWord = HardWords[FMath::RandRange(0, 99)];
+    switch (difficulty)
+    {
+        case 1: 
+        {
+            HiddenWord = EasyWords[FMath::RandRange(0, 99)];
+            break;
+        }
+        case 2: 
+        {
+            HiddenWord = NormalWords[FMath::RandRange(0, 99)];
+            break;
+        }
+        case 3: 
+        {
+            HiddenWord = HardWords[FMath::RandRange(0, 99)];
+            break;
+        }
+        default: 
+        {
+            PrintLine(TEXT("Please select a valid difficulty."));
+            break;
+        }
+    }
     
-    Lives = 5; //Set number of lives
+    Lives = 5;
+    bGameOver = false;
+
+    PrintLine(TEXT("HiddenWord: %s"), *HiddenWord);
+    PrintLine(TEXT("Type your guess for the %i letters word and press ENTER to submit..."), HiddenWord.Len());
+}
+
+void UBullCowCartridge::EndGame()
+{
+    bGameOver = true;
+    PrintLine(TEXT("Press ENTER to play with another word..."));
 }
