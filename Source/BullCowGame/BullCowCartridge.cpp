@@ -7,7 +7,7 @@ void UBullCowCartridge::BeginPlay() // When the game starts
     PrintLine(TEXT("Welcome to the game."));
     PrintLine(TEXT("Guess the 4 letter word!"));
 
-    InitGame();
+    SetupGame();
 }
 
 void UBullCowCartridge::OnInput(const FString& Input) // When the player hits enter
@@ -22,8 +22,8 @@ void UBullCowCartridge::OnInput(const FString& Input) // When the player hits en
     PrintLine(TEXT("You have won!"));
 }
 
-void UBullCowCartridge::InitGame(){
+void UBullCowCartridge::SetupGame(){
 
     HiddenWord = TEXT("cake"); //Set the HiddenWord
-    Lives = 3; //Set number of lives
+    Lives = 5; //Set number of lives
 }
