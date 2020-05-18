@@ -5,7 +5,7 @@ void UBullCowCartridge::BeginPlay() // When the game starts
 {
     Super::BeginPlay();
     PrintLine(TEXT("Welcome to the game."));
-    PrintLine(TEXT("Guess the 4 letter word!"));
+    PrintLine(TEXT("Guess the -X- letters word!"));
 
     SetupGame();
 }
@@ -15,8 +15,18 @@ void UBullCowCartridge::OnInput(const FString& Input) // When the player hits en
     ClearScreen();
 
     if(HiddenWord!=Input){
-        PrintLine(TEXT("You have lost!"));
         Lives -= 1;
+
+        if(Lives <= 0)
+        {
+            PrintLine(TEXT("You have lost!"));
+            return;
+        }
+
+        if(HiddenWord.Len()!=Input.Len())
+            PrintLine(TEXT("Please try a -X- letters word."));
+
+        PrintLine(TEXT("You can do this!\nYou still have -X- lives."));
         return;
     }
     PrintLine(TEXT("You have won!"));
@@ -25,5 +35,5 @@ void UBullCowCartridge::OnInput(const FString& Input) // When the player hits en
 void UBullCowCartridge::SetupGame(){
 
     HiddenWord = TEXT("cake"); //Set the HiddenWord
-    Lives = 5; //Set number of lives
+    Lives = 2; //Set number of lives
 }
