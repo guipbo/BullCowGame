@@ -42,6 +42,11 @@ void UBullCowCartridge::SetupGame(int32 difficulty)
             HiddenWord = HardWords[FMath::RandRange(0, 99)];
             break;
         }
+        case 4: 
+        {
+            HiddenWord = VeryHardWords[FMath::RandRange(0, 216)];
+            break;
+        }
         default: 
         {
             PrintLine(TEXT("Please select a valid difficulty."));
@@ -52,7 +57,7 @@ void UBullCowCartridge::SetupGame(int32 difficulty)
     Lives = HiddenWord.Len();
 
     PrintLine(TEXT("HiddenWord: %s"), *HiddenWord);
-    PrintLine(TEXT("Type your guess for the %i letters word and press ENTER to submit..."), HiddenWord.Len());
+    PrintLine(TEXT("Type your guess for the %i letter word and press ENTER to submit..."), HiddenWord.Len());
 }
 
 void UBullCowCartridge::EndGame()
@@ -77,7 +82,7 @@ void UBullCowCartridge::ProcessGuess(FString Guess)
         PrintLine(TEXT("That's not right, but you can do this!\nYou still have %i live(s)."), Lives);
 
         if(HiddenWord.Len()!=Guess.Len())
-            PrintLine(TEXT("Please try a %i letters word."), HiddenWord.Len());
+            PrintLine(TEXT("Please try a %i letter word."), HiddenWord.Len());
         return;
     }
     PrintLine(TEXT("*****Congratulations!*****\nThat's a win.\nYou're great on this!"));
