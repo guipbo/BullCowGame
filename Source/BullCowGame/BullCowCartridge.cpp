@@ -16,7 +16,7 @@ void UBullCowCartridge::OnInput(const FString& Input) // When the player hits en
     {
         if(HiddenWord!=Input)
         {
-            Lives -= 1;
+            --Lives;
 
             if(Lives <= 0)
             {
@@ -66,7 +66,7 @@ void UBullCowCartridge::SetupGame(int32 difficulty)
         }
     }
     
-    Lives = 5;
+    Lives = HiddenWord.Len();
     bGameOver = false;
 
     PrintLine(TEXT("HiddenWord: %s"), *HiddenWord);
